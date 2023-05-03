@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rashodka", "Rashodka\Rashodka.csproj", "{2852C996-64C3-4ED7-AAAC-82F27BBFF455}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RashodkaTest.Tests", "RashodkaTest.Tests\RashodkaTest.Tests.csproj", "{C1608F13-922C-46F9-85EE-005D46958021}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2852C996-64C3-4ED7-AAAC-82F27BBFF455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2852C996-64C3-4ED7-AAAC-82F27BBFF455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2852C996-64C3-4ED7-AAAC-82F27BBFF455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2852C996-64C3-4ED7-AAAC-82F27BBFF455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1608F13-922C-46F9-85EE-005D46958021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1608F13-922C-46F9-85EE-005D46958021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1608F13-922C-46F9-85EE-005D46958021}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F562238F-694F-4550-A15C-79D5E7F7CFEF}
+	EndGlobalSection
+EndGlobal
