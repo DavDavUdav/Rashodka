@@ -30,9 +30,9 @@ namespace Rashodka
                 MessageBox.Show("Введите корректное наименование");
                 return;
             }
-            if (Regex.IsMatch(textBox1.Text, @"^[a-zA-Z]+$"))
+            if (Regex.IsMatch(textBox1.Text, @"^[\w\\\/]+$"))
             {
-                MessageBox.Show("Введите корректное наименование");
+                MessageBox.Show("ДЛя ввода допускаются только буквы и цифры");
                 return;
             }
             if (NumUD_count.Value<=0)

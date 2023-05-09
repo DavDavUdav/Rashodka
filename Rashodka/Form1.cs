@@ -27,23 +27,52 @@ namespace Rashodka
         
         public async void btn_Extradition_Click(object sender, EventArgs e)
         {
-            if (cb_region.SelectedItem=="")
+            if (string.IsNullOrWhiteSpace(cb_region?.SelectedItem.ToString()))
             {
                 MessageBox.Show("Вы не выбрали район");
                 return;
             }
-            if (cb_consumables.SelectedItem=="")
+            if (string.IsNullOrWhiteSpace(cb_consumables.SelectedItem.ToString()))
             {
                 MessageBox.Show("Вы не выбрали материал");
                 return;
             }
-            if (numericUpDown1.Value<=0)
+            if (Decimal.ToInt32(numericUpDown1.Value)<=0)
             {
                 MessageBox.Show("Введите число больше 0");
                 return;
             }
-            //.Where(x => x.Consumables.ConsumablesName == cb_consumables.Text)
-             //   .Where(x => x.Region.RegionName == cb_region.Text)
+
+            //todo дописать функционал изменения значения в бд и вычитание количества материала
+
+            var getcons1 = await _dataStore.Consumables
+                .Where(x => x.ConsumablesName == cb_consumables.SelectedItem.ToString())
+                .Select(x => new LoadConsumables
+                {
+                    ConsumablesId= x.ConsumablesId,
+                    ConsumablesName= x.ConsumablesName,
+                    ConsumablesCount= x.ConsumablesCount
+                })
+                .ToListAsync();
+
+
+
+            var getcons = await _dataStore.Consumables
+                .FirstAsync(x => x.ConsumablesName == cb_consumables.SelectedItem.ToString());
+
+
+
+            if (getcons.ConsumablesCount < numericUpDown1.Value)
+            {
+                MessageBox.Show($"Нехватка картриджей. Вы можете выдать не более {getcons.ConsumablesCount}");
+            }
+
+            var sum = getcons.ConsumablesCount -= Convert.ToInt32(numericUpDown1.Value);
+
+            getcons.ConsumablesCount = sum;
+            _dataStore.Consumables.Update(getcons);
+            await _dataStore.SaveChangesAsync();
+
 
             var extr = new Extradition()
             {
@@ -56,22 +85,13 @@ namespace Rashodka
                     .Select(x => x.RegionId)
                     .FirstOrDefault(),
                 ConsumablesCount = Convert.ToInt32(numericUpDown1.Value),
-                Date= DateTime.Now.Date,
+                Date= DateTime.Now.Date
             };
 
-
-            //todo дописать функционал добавления записи в бд
+            
             _dataStore.Extradition.Add(extr);
-
-
-
-            var editCons = _dataStore.Consumables
-                .Where(x => x.ConsumablesId == Convert.ToInt32(dgv1.SelectedRows[0].Cells[0].Value))
-                .FirstOrDefault();
-
-            editCons.ConsumablesCount -= Convert.ToInt32(numericUpDown1.Value);
-
-            dgv1.SelectedRows[0].Cells[2].Value = Convert.ToInt32(dgv1.SelectedRows[0].Cells[2].Value) - numericUpDown1.Value;
+            await _dataStore.SaveChangesAsync();
+            UpdateDGVExtradition();
         }
 
         /// <summary>
@@ -132,15 +152,32 @@ namespace Rashodka
         /// </summary>
         public async void UpdateDGVExtradition()
         {
+            
             var ext = await _dataStore.Extradition
-                .Select(x => new Extradition()
+                .Select(x => new LoadExtradition1()
                 {
-                    ExtraditionId= x.ExtraditionId,
-                    ConsumablesId= x.ConsumablesId,
-                    RegionId= x.RegionId,
-                    Date= x.Date
+                    ExtraditionId = x.ExtraditionId,
+                    ConsumablesName = _dataStore.Consumables
+                        .First(y => y.ConsumablesId == x.ConsumablesId).ConsumablesName,
+                    ConsumablesCount = x.ConsumablesCount,
+                    RegionName = _dataStore.Region
+                        .First(y => y.RegionId == x.RegionId).RegionName,
+                    Date = x.Date
                 }).ToListAsync();
-            dgv1.DataSource= ext;
+
+            dgv1.DataSource = ext;
+        }
+
+        public async void UpdateDGVConsumables()
+        {
+            var cons = await _dataStore.Consumables
+                .Select(x => new LoadConsumables()
+                {
+                    ConsumablesId = x.ConsumablesId,
+                    ConsumablesName = x.ConsumablesName,
+                    ConsumablesCount = x.ConsumablesCount
+                }).ToListAsync();
+            dgv_warehouse.DataSource = cons;
         }
 
         /// <summary>
@@ -148,6 +185,7 @@ namespace Rashodka
         /// </summary>
         public async void UpdateCbConsumables()
         {
+            cb_consumables.Items.Clear();
             var _Conumables = await _dataStore.Consumables
                 .Select(x => new Consumables()
                 {
@@ -266,7 +304,7 @@ namespace Rashodka
                     }).ToListAsync();
 
                 cb_region.SelectionStart = cb_region.Text.Length;
-                if (search_region.Count > 0)
+                if (Decimal.ToInt32(search_region.Count) > 0)
                 {
                     foreach (var region in search_region)
                     {
@@ -299,6 +337,7 @@ namespace Rashodka
         /// <param name="e"></param>
         private async void cb_consumables_TextUpdate(object sender, EventArgs e)
         {
+
             if (this.cb_consumables.Text != "")
             {
                 string st = this.cb_consumables.Text;
@@ -312,9 +351,27 @@ namespace Rashodka
                         ConsumablesId=x.ConsumablesId,
                         ConsumablesName= x.ConsumablesName
                     }).ToListAsync();
+                cb_consumables.SelectionStart = cb_consumables.SelectionLength;
+
+                if (Decimal.ToInt32(search_consumables.Count)>0)
+                {
+                    foreach (var cons in search_consumables)
+                    {
+                        cb_region.Items.Add(cons.ConsumablesName);
+                    }
+
+                    this.cb_consumables.Text = st;
+                    this.cb_consumables.DroppedDown = true;
+                }
             }
         }
 
+        
+
+        private void btn_update_warehouse_Click(object sender, EventArgs e)
+        {
+            UpdateDGVConsumables();
+        }
     }
 
     /// <summary>
@@ -324,7 +381,7 @@ namespace Rashodka
     {
         [DisplayName("ID")]
         public int RegionId { get; set; }
-        [DisplayName("Регион")]
+        [Required, DisplayName("Регион")]
         public string RegionName { get; set; }
     }
 
@@ -351,6 +408,21 @@ namespace Rashodka
         public int RegionId { get; set; }
         [DisplayName("Кол-во материала")]
         public int ConsumablesCount { get; set; }
+        [Required, DisplayName("Дата")] 
+        public DateTime Date { get; set; }
+    }
+
+    public class LoadExtradition1 // выдача расходки
+    {
+        [DisplayName("ID")]
+        public int ExtraditionId { get; set; }
+        [Required, DisplayName("материал")]
+        public string ConsumablesName { get; set; }
+        [Required, DisplayName("регион")]
+        public string RegionName { get; set; }
+        [Required, DisplayName("Кол-во материала")]
+        public int ConsumablesCount { get; set; }
+        [Required, DisplayName("Дата")]
         public DateTime Date { get; set; }
     }
 }

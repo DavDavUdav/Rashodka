@@ -46,8 +46,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btn_edit = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgv_warehouse = new System.Windows.Forms.DataGridView();
+            this.btn_update_warehouse = new System.Windows.Forms.Button();
+            this.btn_add_count_consumables = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -55,7 +56,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_warehouse)).BeginInit();
             this.SuspendLayout();
             // 
             // dgv1
@@ -185,7 +186,7 @@
             this.расходныйМатериалToolStripMenuItem1,
             this.регионToolStripMenuItem1});
             this.регионToolStripMenuItem.Name = "регионToolStripMenuItem";
-            this.регионToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.регионToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.регионToolStripMenuItem.Text = "Добавить запись";
             // 
             // расходныйМатериалToolStripMenuItem1
@@ -226,8 +227,9 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.dataGridView1);
-            this.tabPage2.Controls.Add(this.btn_edit);
+            this.tabPage2.Controls.Add(this.btn_add_count_consumables);
+            this.tabPage2.Controls.Add(this.dgv_warehouse);
+            this.tabPage2.Controls.Add(this.btn_update_warehouse);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -236,24 +238,34 @@
             this.tabPage2.Text = "Склад";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btn_edit
+            // dgv_warehouse
             // 
-            this.btn_edit.Location = new System.Drawing.Point(277, 6);
-            this.btn_edit.Name = "btn_edit";
-            this.btn_edit.Size = new System.Drawing.Size(75, 24);
-            this.btn_edit.TabIndex = 11;
-            this.btn_edit.Text = "Добавить";
-            this.btn_edit.UseVisualStyleBackColor = true;
+            this.dgv_warehouse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_warehouse.Location = new System.Drawing.Point(8, 36);
+            this.dgv_warehouse.Name = "dgv_warehouse";
+            this.dgv_warehouse.RowTemplate.Height = 25;
+            this.dgv_warehouse.Size = new System.Drawing.Size(965, 426);
+            this.dgv_warehouse.TabIndex = 12;
+            this.dgv_warehouse.TabStop = false;
             // 
-            // dataGridView1
+            // btn_update_warehouse
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 79);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(965, 383);
-            this.dataGridView1.TabIndex = 12;
-            this.dataGridView1.TabStop = false;
+            this.btn_update_warehouse.Location = new System.Drawing.Point(817, 6);
+            this.btn_update_warehouse.Name = "btn_update_warehouse";
+            this.btn_update_warehouse.Size = new System.Drawing.Size(75, 24);
+            this.btn_update_warehouse.TabIndex = 11;
+            this.btn_update_warehouse.Text = "Обновить";
+            this.btn_update_warehouse.UseVisualStyleBackColor = true;
+            this.btn_update_warehouse.Click += new System.EventHandler(this.btn_update_warehouse_Click);
+            // 
+            // btn_add_count_consumables
+            // 
+            this.btn_add_count_consumables.Location = new System.Drawing.Point(898, 6);
+            this.btn_add_count_consumables.Name = "btn_add_count_consumables";
+            this.btn_add_count_consumables.Size = new System.Drawing.Size(75, 24);
+            this.btn_add_count_consumables.TabIndex = 13;
+            this.btn_add_count_consumables.Text = "Обновить";
+            this.btn_add_count_consumables.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -278,7 +290,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_warehouse)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,7 +315,8 @@
         private NumericUpDown numericUpDown1;
         private Label label3;
         private ComboBox cb_consumables;
-        private Button btn_edit;
-        private DataGridView dataGridView1;
+        private Button btn_update_warehouse;
+        private DataGridView dgv_warehouse;
+        private Button btn_add_count_consumables;
     }
 }

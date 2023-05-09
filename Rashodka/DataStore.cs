@@ -53,17 +53,18 @@ namespace Rashodka
         public List<Extradition> Extraditions { get; set;}
     }
 
+
     public class Extradition // выдача расходки
     {
         [DisplayName("ID")]
         public int ExtraditionId { get; set;}
-        [DisplayName("Id материала")]
+        [Required, DisplayName("Id материала")]
         public int ConsumablesId { get;set; }
-        [DisplayName("Id региона") ]
+        [Required, DisplayName("Id региона") ]
         public int RegionId { get; set; }
-        [DisplayName("Кол-во материала")]
+        [Required, DisplayName("Кол-во материала")]
         public int ConsumablesCount { get; set;}
-        [DisplayName("Дата")]
+        [Required, DisplayName("Дата")]
         public DateTime Date { get; set; }
 
         public Region Region { get; set; }  
